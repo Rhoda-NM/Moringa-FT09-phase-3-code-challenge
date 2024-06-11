@@ -1,6 +1,6 @@
 from __init__ import CURSOR, CONN
-from author import Author
-from magazine import Magazine
+from models.author import Author
+from models.magazine import Magazine
 class Article:
 
     all = {}
@@ -13,8 +13,8 @@ class Article:
             raise ValueError("Title must be a string between 5 and 50 characters")
         self.author = author
         self.magazine = magazine
-        self.title = title
-        self._id = None
+        self._title = title
+        self.id = None
         self.save()
 
     def __repr__(self):
@@ -26,6 +26,8 @@ class Article:
     
     @title.setter
     def title(self, value):
+        if hasattr(self, 'title'):
+            raise AttributeError("Article title cannot be changed")
         if not isinstance(value, str) or not 5 <= len(value) <= 50:
             raise ValueError("Title must be a string between 5 and 50 characters long")
         self._title = value
@@ -41,6 +43,8 @@ class Article:
         CURSOR.execute(sql, (self.author.id, self.magazine.id, self.title))
         CONN.commit()
         self.id = CURSOR.lastrowid
+        
+
 
     @property
     def author(self):

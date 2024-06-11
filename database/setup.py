@@ -31,3 +31,20 @@ def create_tables():
 
     conn.commit()
     conn.close()
+
+def drop_tables():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        DROP TABLE IF EXISTS authors
+    ''')
+    cursor.execute('''
+        DROP TABLE IF EXISTS magazines
+    ''')
+    cursor.execute('''
+        DROP TABLE IF EXISTS articles
+    ''')
+
+    conn.commit()
+    conn.close()
